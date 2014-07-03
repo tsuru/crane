@@ -1,0 +1,16 @@
+# This is the official list of people who have contributed code to
+# crane.
+# The AUTHORS file lists the copyright holders; this file lists people.
+# For example, Globo.com employees are listed here but not in AUTHORS,
+# because Globo.com holds the copyright.
+#
+# You can update this list using the following command:
+#
+#   % git shortlog -se | awk '{$1=""; print $0}' | sed -e 's/^ //'
+#
+# Please keep this file sorted, and group users with multiple emails.
+
+Andrews Medina <andrewsmedina@gmail.com>
+Cezar Sa Espinola <cezar.sa@corp.globo.com>
+Evandro Flores <eof@eof.com.br>
+Francisco Souza <fss@corp.globo.com> <f@souza.cc>
