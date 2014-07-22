@@ -47,15 +47,11 @@ func (c *ServiceCreate) Run(context *cmd.Context, client *cmd.Client) error {
 	if err != nil {
 		return err
 	}
-	r, err := client.Do(request)
+	_, err = client.Do(request)
 	if err != nil {
 		return err
 	}
-	b, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		return err
-	}
-	fmt.Fprintf(context.Stdout, "%s", b)
+	fmt.Fprintln(context.Stdout, "Service successfully created")
 	return nil
 }
 

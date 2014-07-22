@@ -36,7 +36,7 @@ func (s *S) TestServiceCreateRun(c *gocheck.C) {
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
 	err := (&ServiceCreate{}).Run(&context, client)
 	c.Assert(err, gocheck.IsNil)
-	c.Assert(stdout.String(), gocheck.Equals, "success")
+	c.Assert(stdout.String(), gocheck.Equals, "Service successfully created\n")
 }
 
 func (s *S) TestServiceRemoveRun(c *gocheck.C) {
