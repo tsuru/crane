@@ -229,7 +229,7 @@ e.g.: $ crane template`
 	return &cmd.Info{
 		Name:  "template",
 		Usage: usg,
-		Desc:  "Generates a manifest template file and places it in current path",
+		Desc:  "Generates a manifest template file and places it in current directory",
 	}
 }
 
@@ -261,6 +261,6 @@ endpoint:
 		return errors.New("Error while creating manifest template.\nOriginal error message is: " + err.Error())
 	}
 	f.Write([]byte(template))
-	fmt.Fprintln(ctx.Stdout, `Generated file "manifest.yaml" in current path`)
+	fmt.Fprintln(ctx.Stdout, `Generated file "manifest.yaml" in current directory`)
 	return nil
 }

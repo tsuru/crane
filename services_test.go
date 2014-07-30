@@ -258,7 +258,7 @@ e.g.: $ crane template`
 	expected := &cmd.Info{
 		Name:  "template",
 		Usage: usg,
-		Desc:  "Generates a manifest template file and places it in current path",
+		Desc:  "Generates a manifest template file and places it in current directory",
 	}
 	c.Assert(got, gocheck.DeepEquals, expected)
 }
@@ -275,7 +275,7 @@ func (s *S) TestServiceTemplateRun(c *gocheck.C) {
 	err := (&ServiceTemplate{}).Run(&ctx, client)
 	defer os.Remove("./manifest.yaml")
 	c.Assert(err, gocheck.IsNil)
-	expected := "Generated file \"manifest.yaml\" in current path\n"
+	expected := "Generated file \"manifest.yaml\" in current directory\n"
 	c.Assert(stdout.String(), gocheck.Equals, expected)
 	f, err := os.Open("./manifest.yaml")
 	c.Assert(err, gocheck.IsNil)
