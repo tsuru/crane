@@ -6,12 +6,13 @@ package main
 
 import (
 	"bytes"
-	"github.com/tsuru/tsuru/cmd"
-	"github.com/tsuru/tsuru/cmd/testing"
 	"io/ioutil"
-	"launchpad.net/gocheck"
 	"net/http"
 	"os"
+
+	"github.com/tsuru/tsuru/cmd"
+	"github.com/tsuru/tsuru/cmd/testing"
+	"launchpad.net/gocheck"
 )
 
 func (s *S) TestServiceCreateInfo(c *gocheck.C) {

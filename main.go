@@ -5,8 +5,9 @@
 package main
 
 import (
-	"github.com/tsuru/tsuru/cmd"
 	"os"
+
+	"github.com/tsuru/tsuru/cmd"
 )
 
 const (

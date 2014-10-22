@@ -10,10 +10,11 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/tsuru/tsuru/cmd"
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	"github.com/tsuru/tsuru/cmd"
 )
 
 type ServiceCreate struct{}
