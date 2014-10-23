@@ -45,10 +45,12 @@ func (s *S) TestServiceRemoveRun(c *gocheck.C) {
 		called         bool
 		stdout, stderr bytes.Buffer
 	)
+	stdin := bytes.NewBufferString("y\n")
 	context := cmd.Context{
 		Args:   []string{"my-service"},
 		Stdout: &stdout,
 		Stderr: &stderr,
+		Stdin:  stdin,
 	}
 	trans := testing.ConditionalTransport{
 		Transport: testing.Transport{
@@ -64,7 +66,8 @@ func (s *S) TestServiceRemoveRun(c *gocheck.C) {
 	err := (&ServiceRemove{}).Run(&context, client)
 	c.Assert(err, gocheck.IsNil)
 	c.Assert(called, gocheck.Equals, true)
-	c.Assert(stdout.String(), gocheck.Equals, "Service successfully removed.\n")
+	expected := `Are you sure you want to remove the service "my-service"? (y/n) Service successfully removed.`
+	c.Assert(stdout.String(), gocheck.Equals, expected+"\n")
 }
 
 func (s *S) TestServiceRemoveRunWithRequestFailure(c *gocheck.C) {
@@ -73,6 +76,7 @@ func (s *S) TestServiceRemoveRunWithRequestFailure(c *gocheck.C) {
 		Args:   []string{"my-service"},
 		Stdout: &stdout,
 		Stderr: &stderr,
+		Stdin:  bytes.NewBufferString("y\n"),
 	}
 	trans := testing.Transport{
 		Message: "This service cannot be removed because it has instances.\nPlease remove these instances before removing the service.",

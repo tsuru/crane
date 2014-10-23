@@ -56,10 +56,16 @@ func (c *ServiceCreate) Run(context *cmd.Context, client *cmd.Client) error {
 	return nil
 }
 
-type ServiceRemove struct{}
+type ServiceRemove struct {
+	cmd.ConfirmationCommand
+}
 
 func (c *ServiceRemove) Run(context *cmd.Context, client *cmd.Client) error {
 	serviceName := context.Args[0]
+	question := fmt.Sprintf("Are you sure you want to remove the service %q?", serviceName)
+	if !c.Confirm(context, question) {
+		return nil
+	}
 	url, err := cmd.GetURL("/services/" + serviceName)
 	if err != nil {
 		return err
