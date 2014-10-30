@@ -286,6 +286,7 @@ func (s *S) TestServiceTemplateRun(c *gocheck.C) {
 	c.Assert(err, gocheck.IsNil)
 	fc, err := ioutil.ReadAll(f)
 	manifest := `id: servicename
+username: username_to_auth
 password: .{16}
 endpoint:
   production: production-endpoint.com

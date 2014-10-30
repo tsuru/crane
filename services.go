@@ -257,6 +257,7 @@ func (c *ServiceTemplate) Run(ctx *cmd.Context, client *cmd.Client) error {
 		return err
 	}
 	template := `id: servicename
+username: username_to_auth
 password: %s
 endpoint:
   production: production-endpoint.com
