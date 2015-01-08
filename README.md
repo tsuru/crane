@@ -7,11 +7,11 @@ crane
 crane is a command line for service providers/administrators on
 [tsuru](https://github.com/tsuru/tsuru).
 
-## how to use
+Links:
 
-[Docs here](http://docs.tsuru.io/en/0.6.2/services/index.html).
-
-## reporting issues
-
-Please report issues to the
-[tsuru/tsuru](https://github.com/tsuru/tsuru/issues) repository.
+- crane reference guide: http://tsuru-crane.readthedocs.org/en/latest/
+- Full tsuru documentation: http://docs.tsuru.io
+- How to Contribute: http://docs.tsuru.io/en/latest/contributing
+- Repository & Issue Tracker: https://github.com/tsuru/tsuru
+- Gitter: https://gitter.im/tsuru/tsuru
+- IRC: Freenode, channel #tsuru
