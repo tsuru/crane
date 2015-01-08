@@ -177,3 +177,159 @@ logout
     $ crane logout
 
 Logout will delete the token file and terminate the session within tsuru server.
+
+Create an empty manifest file
+=============================
+
+Usage:
+
+.. highlight:: bash
+
+::
+
+    $ crane template
+
+Template will create a file named "manifest.yaml" with the following content:
+
+.. highlight:: yaml
+
+::
+
+    id: servicename
+    endpoint:
+      production: production-endpoint.com
+      test: test-endpoint.com:8080
+
+Change it at will to configure your service. Id is the id of your service, it
+must be unique. You must provide a production endpoint that will be invoked by
+tsuru when application developers ask for new instances and are binding their
+apps to their instances. For more details, see the text "Services API
+Workflow": http://tsuru.rtfd.org/services-api-workflow.
+
+
+Create a new service
+====================
+
+Usage:
+
+.. highlight:: bash
+
+::
+
+    $ crane create <manifest-file.yaml>
+
+Create will create a new service with information present in the manifest file.
+Here is an example of usage:
+
+.. highlight:: bash
+
+::
+
+	$ cat /home/gopher/projects/mysqlapi/manifest.yaml
+	id: mysqlapi
+	endpoint:
+	  production: https://mysqlapi.com:7777
+	$ crane create /home/gopher/projects/mysqlapi/manifest.yaml
+	success
+
+You can use "crane template" to generate a template. Both id and production
+endpoint are required fields.
+
+When creating a new service, crane will add all user's teams as administrator
+teams of the service.
+
+Update a service
+================
+
+Usage:
+
+.. highlight:: bash
+
+::
+
+    $ crane update <manifest-file.yaml>
+
+Update will update a service using a manifest file. Currently, it's only
+possible to edit an endpoint, or add new endpoints. You need to be an
+administrator of the team to perform an update.
+
+
+Remove a service
+================
+
+Usage:
+
+.. highlight:: bash
+
+::
+
+    $ crane remove <service-id>
+
+Remove will remove a service from crane server. You need to be an administrator
+of the team to remove it.
+
+
+List services that you administrate
+===================================
+
+Usage:
+
+.. highlight:: bash
+
+::
+
+    $ crane list
+
+List will list all services that you administrate, and the instances of each
+service, created by application developers.
+
+
+Update service's documentation
+==============================
+
+Usage:
+
+.. highlight:: bash
+
+::
+
+    $ crane doc-add <service-id> <doc-file.txt>
+
+doc-add will update service's doc. Example of usage:
+
+.. highlight:: bash
+
+::
+
+    $ cat doc.txt
+    mysqlapi
+
+    This service is used for mysql connections.
+
+    Once bound, you will be able to use the following environment variables:
+
+            - MYSQL_HOST: host of MySQL server
+            - MYSQL_PORT: port of MySQL instance
+            - MYSQL_DATABASE_NAME: name of the database
+            - MYSQL_USER: MySQL user for connections
+            - MYSQL_PASSWORD: MySQL password for connections
+    $ crane doc-add mysqlapi doc.txt
+    Documentation for 'mysqlapi' successfully updated.
+
+.. warning::
+
+    You need to be an administrator of the service to update its docs.
+
+
+Retrieve service's documentation
+================================
+
+Usage:
+
+.. highlight:: bash
+
+::
+
+    $ crane doc-get <service-id>
+
+doc-get will retrieve the current documentation of the service.
