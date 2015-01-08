@@ -196,6 +196,8 @@ Template will create a file named "manifest.yaml" with the following content:
 ::
 
     id: servicename
+    username: username_to_auth
+    password: ****************
     endpoint:
       production: production-endpoint.com
       test: test-endpoint.com:8080
