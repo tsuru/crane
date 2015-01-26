@@ -90,8 +90,7 @@
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/ssh/terminal",
-			"Comment": "null-236",
-			"Rev": "69e2a90ed92d03812364aeb947b7068dc42e561e"
+			"Rev": "1fbbd62cfec66bd39d91e97749579579d4d3037e"
 		},
 		{
 			"ImportPath": "gopkg.in/mgo.v2",
