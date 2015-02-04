@@ -1,4 +1,4 @@
-// Copyright 2014 crane authors. All rights reserved.
+// Copyright 2015 crane authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -11,7 +11,7 @@ import (
 	"os"
 
 	"github.com/tsuru/tsuru/cmd"
-	"github.com/tsuru/tsuru/cmd/testing"
+	"github.com/tsuru/tsuru/cmd/cmdtest"
 	"launchpad.net/gocheck"
 )
 
@@ -33,7 +33,7 @@ func (s *S) TestServiceCreateRun(c *gocheck.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	trans := testing.Transport{Message: "success", Status: http.StatusOK}
+	trans := cmdtest.Transport{Message: "success", Status: http.StatusOK}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
 	err := (&ServiceCreate{}).Run(&context, client)
 	c.Assert(err, gocheck.IsNil)
@@ -52,8 +52,8 @@ func (s *S) TestServiceRemoveRun(c *gocheck.C) {
 		Stderr: &stderr,
 		Stdin:  stdin,
 	}
-	trans := testing.ConditionalTransport{
-		Transport: testing.Transport{
+	trans := cmdtest.ConditionalTransport{
+		Transport: cmdtest.Transport{
 			Message: "",
 			Status:  http.StatusNoContent,
 		},
@@ -78,7 +78,7 @@ func (s *S) TestServiceRemoveRunWithRequestFailure(c *gocheck.C) {
 		Stderr: &stderr,
 		Stdin:  bytes.NewBufferString("y\n"),
 	}
-	trans := testing.Transport{
+	trans := cmdtest.Transport{
 		Message: "This service cannot be removed because it has instances.\nPlease remove these instances before removing the service.",
 		Status:  http.StatusForbidden,
 	}
@@ -119,7 +119,7 @@ func (s *S) TestServiceListRun(c *gocheck.C) {
 | mysql    | my_db     |
 +----------+-----------+
 `
-	trans := testing.Transport{Message: response, Status: http.StatusOK}
+	trans := cmdtest.Transport{Message: response, Status: http.StatusOK}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
 	context := cmd.Context{
 		Args:   []string{},
@@ -135,7 +135,7 @@ func (s *S) TestServiceListRunWithNoServicesReturned(c *gocheck.C) {
 	var stdout, stderr bytes.Buffer
 	response := `[]`
 	expected := ""
-	trans := testing.Transport{Message: response, Status: http.StatusOK}
+	trans := cmdtest.Transport{Message: response, Status: http.StatusOK}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
 	context := cmd.Context{
 		Args:   []string{},
@@ -152,8 +152,8 @@ func (s *S) TestServiceUpdate(c *gocheck.C) {
 		called         bool
 		stdout, stderr bytes.Buffer
 	)
-	trans := testing.ConditionalTransport{
-		Transport: testing.Transport{
+	trans := cmdtest.ConditionalTransport{
+		Transport: cmdtest.Transport{
 			Message: "",
 			Status:  http.StatusNoContent,
 		},
@@ -193,8 +193,8 @@ func (s *S) TestServiceDocAdd(c *gocheck.C) {
 		called         bool
 		stdout, stderr bytes.Buffer
 	)
-	trans := testing.ConditionalTransport{
-		Transport: testing.Transport{Message: "", Status: http.StatusNoContent},
+	trans := cmdtest.ConditionalTransport{
+		Transport: cmdtest.Transport{Message: "", Status: http.StatusNoContent},
 		CondFunc: func(req *http.Request) bool {
 			called = true
 			return req.Method == "PUT" && req.URL.Path == "/services/serv/doc"
@@ -227,8 +227,8 @@ func (s *S) TestServiceDocGet(c *gocheck.C) {
 		called         bool
 		stdout, stderr bytes.Buffer
 	)
-	trans := testing.ConditionalTransport{
-		Transport: testing.Transport{Message: "some doc", Status: http.StatusNoContent},
+	trans := cmdtest.ConditionalTransport{
+		Transport: cmdtest.Transport{Message: "some doc", Status: http.StatusNoContent},
 		CondFunc: func(req *http.Request) bool {
 			called = true
 			return req.Method == "GET" && req.URL.Path == "/services/serv/doc"
@@ -270,7 +270,7 @@ e.g.: $ crane template`
 
 func (s *S) TestServiceTemplateRun(c *gocheck.C) {
 	var stdout, stderr bytes.Buffer
-	trans := testing.Transport{Message: "", Status: http.StatusOK}
+	trans := cmdtest.Transport{Message: "", Status: http.StatusOK}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
 	ctx := cmd.Context{
 		Args:   []string{},
