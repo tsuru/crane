@@ -1,4 +1,4 @@
-// Copyright 2014 crane authors. All rights reserved.
+// Copyright 2015 crane authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/tsuru/tsuru/cmd"
-	tTesting "github.com/tsuru/tsuru/testing"
+	"github.com/tsuru/tsuru/cmd/cmdtest"
 	"launchpad.net/gocheck"
 )
 
@@ -19,11 +19,11 @@ type S struct {
 }
 
 func (s *S) SetUpSuite(c *gocheck.C) {
-	s.recover = tTesting.SetTargetFile(c, []byte("http://localhost:8080"))
+	s.recover = cmdtest.SetTargetFile(c, []byte("http://localhost:8080"))
 }
 
 func (s *S) TearDownSuite(c *gocheck.C) {
-	tTesting.RollbackFile(s.recover)
+	cmdtest.RollbackFile(s.recover)
 }
 
 var _ = gocheck.Suite(&S{})
