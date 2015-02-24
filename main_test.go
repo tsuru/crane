@@ -1,4 +1,4 @@
-// Copyright 2014 crane authors. All rights reserved.
+// Copyright 2015 crane authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -6,64 +6,64 @@ package main
 
 import (
 	"github.com/tsuru/tsuru/cmd"
-	"launchpad.net/gocheck"
+	"gopkg.in/check.v1"
 )
 
-func (s *S) TestCommandsFromBaseManagerAreRegistered(c *gocheck.C) {
+func (s *S) TestCommandsFromBaseManagerAreRegistered(c *check.C) {
 	baseManager := cmd.BuildBaseManager("tsuru", version, header, nil)
 	manager := buildManager("tsuru")
 	for name, instance := range baseManager.Commands {
 		command, ok := manager.Commands[name]
-		c.Assert(ok, gocheck.Equals, true)
-		c.Assert(command, gocheck.FitsTypeOf, instance)
+		c.Assert(ok, check.Equals, true)
+		c.Assert(command, check.FitsTypeOf, instance)
 	}
 }
 
-func (s *S) TestCreateIsRegistered(c *gocheck.C) {
+func (s *S) TestCreateIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	target, ok := manager.Commands["create"]
-	c.Assert(ok, gocheck.Equals, true)
-	c.Assert(target, gocheck.FitsTypeOf, &ServiceCreate{})
+	c.Assert(ok, check.Equals, true)
+	c.Assert(target, check.FitsTypeOf, &ServiceCreate{})
 }
 
-func (s *S) TestRemoveIsRegistered(c *gocheck.C) {
+func (s *S) TestRemoveIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	remove, ok := manager.Commands["remove"]
-	c.Assert(ok, gocheck.Equals, true)
-	c.Assert(remove, gocheck.FitsTypeOf, &ServiceRemove{})
+	c.Assert(ok, check.Equals, true)
+	c.Assert(remove, check.FitsTypeOf, &ServiceRemove{})
 }
 
-func (s *S) TestListIsRegistered(c *gocheck.C) {
+func (s *S) TestListIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	remove, ok := manager.Commands["list"]
-	c.Assert(ok, gocheck.Equals, true)
-	c.Assert(remove, gocheck.FitsTypeOf, &ServiceList{})
+	c.Assert(ok, check.Equals, true)
+	c.Assert(remove, check.FitsTypeOf, &ServiceList{})
 }
 
-func (s *S) TestUpdateIsRegistered(c *gocheck.C) {
+func (s *S) TestUpdateIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["update"]
-	c.Assert(ok, gocheck.Equals, true)
-	c.Assert(update, gocheck.FitsTypeOf, &ServiceUpdate{})
+	c.Assert(ok, check.Equals, true)
+	c.Assert(update, check.FitsTypeOf, &ServiceUpdate{})
 }
 
-func (s *S) TestDocGetIsRegistered(c *gocheck.C) {
+func (s *S) TestDocGetIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["doc-get"]
-	c.Assert(ok, gocheck.Equals, true)
-	c.Assert(update, gocheck.FitsTypeOf, &ServiceDocGet{})
+	c.Assert(ok, check.Equals, true)
+	c.Assert(update, check.FitsTypeOf, &ServiceDocGet{})
 }
 
-func (s *S) TestDocAddIsRegistered(c *gocheck.C) {
+func (s *S) TestDocAddIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["doc-add"]
-	c.Assert(ok, gocheck.Equals, true)
-	c.Assert(update, gocheck.FitsTypeOf, &ServiceDocAdd{})
+	c.Assert(ok, check.Equals, true)
+	c.Assert(update, check.FitsTypeOf, &ServiceDocAdd{})
 }
 
-func (s *S) TestTemplateIsRegistered(c *gocheck.C) {
+func (s *S) TestTemplateIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["template"]
-	c.Assert(ok, gocheck.Equals, true)
-	c.Assert(update, gocheck.FitsTypeOf, &ServiceTemplate{})
+	c.Assert(ok, check.Equals, true)
+	c.Assert(update, check.FitsTypeOf, &ServiceTemplate{})
 }
