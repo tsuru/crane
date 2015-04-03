@@ -200,7 +200,6 @@ Template will create a file named "manifest.yaml" with the following content:
     password: ****************
     endpoint:
       production: production-endpoint.com
-      test: test-endpoint.com:8080
 
 Change it at will to configure your service. Id is the id of your service, it
 must be unique. You must provide a production endpoint that will be invoked by

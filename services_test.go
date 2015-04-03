@@ -289,7 +289,6 @@ func (s *S) TestServiceTemplateRun(c *check.C) {
 username: username_to_auth
 password: .{16}
 endpoint:
-  production: production-endpoint.com
-  test: test-endpoint.com:8080`
+  production: production-endpoint.com`
 	c.Assert(string(fc), check.Matches, manifest)
 }

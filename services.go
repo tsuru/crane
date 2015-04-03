@@ -260,8 +260,7 @@ func (c *ServiceTemplate) Run(ctx *cmd.Context, client *cmd.Client) error {
 username: username_to_auth
 password: %s
 endpoint:
-  production: production-endpoint.com
-  test: test-endpoint.com:8080`
+  production: production-endpoint.com`
 	template = fmt.Sprintf(template, pass)
 	f, err := os.Create("manifest.yaml")
 	defer f.Close()
