@@ -270,8 +270,8 @@ Remove will remove a service from crane server. You need to be an administrator
 of the team to remove it.
 
 
-List services that you administrate
-===================================
+List services that you manage
+=============================
 
 Usage:
 
@@ -281,8 +281,8 @@ Usage:
 
     $ crane list
 
-List will list all services that you administrate, and the instances of each
-service, created by application developers.
+``crane list`` will list all services that you manage, and the instances of
+each service, created by application developers.
 
 
 Update service's documentation
