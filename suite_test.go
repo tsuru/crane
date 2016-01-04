@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/tsuru/tsuru/cmd"
-	"github.com/tsuru/tsuru/cmd/cmdtest"
 	"gopkg.in/check.v1"
 )
 
@@ -19,11 +18,11 @@ type S struct {
 }
 
 func (s *S) SetUpSuite(c *check.C) {
-	s.recover = cmdtest.SetTargetFile(c, []byte("http://localhost:8080"))
+	os.Setenv("TSURU_TARGET", "http://localhost:8080")
 }
 
 func (s *S) TearDownSuite(c *check.C) {
-	cmdtest.RollbackFile(s.recover)
+	os.Unsetenv("TSURU_TARGET")
 }
 
 var _ = check.Suite(&S{})
