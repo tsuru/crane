@@ -259,6 +259,7 @@ func (c *ServiceTemplate) Run(ctx *cmd.Context, client *cmd.Client) error {
 	template := `id: servicename
 username: username_to_auth
 password: %s
+team: team_responsible_to_provide_service
 endpoint:
   production: production-endpoint.com`
 	template = fmt.Sprintf(template, pass)

@@ -288,6 +288,7 @@ func (s *S) TestServiceTemplateRun(c *check.C) {
 	manifest := `id: servicename
 username: username_to_auth
 password: .{16}
+team: team_responsible_to_provide_service
 endpoint:
   production: production-endpoint.com`
 	c.Assert(string(fc), check.Matches, manifest)
