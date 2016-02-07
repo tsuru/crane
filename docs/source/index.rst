@@ -198,13 +198,19 @@ Template will create a file named "manifest.yaml" with the following content:
     id: servicename
     username: username_to_auth
     password: ****************
+    team: team_responsible_to_provide_service
     endpoint:
       production: production-endpoint.com
 
 Change it at will to configure your service. Id is the id of your service, it
-must be unique. You must provide a production endpoint that will be invoked by
+must be unique.You must provide a production endpoint that will be invoked by
 tsuru when application developers ask for new instances and are binding their
-apps to their instances. For more details, see the text "Services API
+apps to their instances.
+
+You should have a role with **service.create** permission to be able to create a
+new service in tsuru.
+
+For more details, see the text "Services API
 Workflow": http://tsuru.rtfd.org/services-api-workflow.
 
 
