@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/tsuru/tsuru/cmd"
 	"github.com/tsuru/tsuru/cmd/cmdtest"
@@ -59,7 +60,7 @@ func (s *S) TestServiceRemoveRun(c *check.C) {
 		},
 		CondFunc: func(req *http.Request) bool {
 			called = true
-			return req.Method == "DELETE" && req.URL.Path == "/services/my-service"
+			return req.Method == "DELETE" && strings.HasSuffix(req.URL.Path, "/services/my-service")
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
@@ -159,7 +160,7 @@ func (s *S) TestServiceUpdate(c *check.C) {
 		},
 		CondFunc: func(req *http.Request) bool {
 			called = true
-			return req.Method == "PUT" && req.URL.Path == "/services"
+			return req.Method == "PUT" && strings.HasSuffix(req.URL.Path, "/services")
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
@@ -197,7 +198,7 @@ func (s *S) TestServiceDocAdd(c *check.C) {
 		Transport: cmdtest.Transport{Message: "", Status: http.StatusNoContent},
 		CondFunc: func(req *http.Request) bool {
 			called = true
-			return req.Method == "PUT" && req.URL.Path == "/services/serv/doc"
+			return req.Method == "PUT" && strings.HasSuffix(req.URL.Path, "/services/serv/doc")
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
@@ -231,7 +232,7 @@ func (s *S) TestServiceDocGet(c *check.C) {
 		Transport: cmdtest.Transport{Message: "some doc", Status: http.StatusNoContent},
 		CondFunc: func(req *http.Request) bool {
 			called = true
-			return req.Method == "GET" && req.URL.Path == "/services/serv/doc"
+			return req.Method == "GET" && strings.HasSuffix(req.URL.Path, "/services/serv/doc")
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
