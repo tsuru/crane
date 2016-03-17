@@ -167,19 +167,31 @@ func (c *serviceUpdate) Run(ctx *cmd.Context, client *cmd.Client) error {
 	if err != nil {
 		return err
 	}
-	url, err := cmd.GetURL("/services")
+	var y serviceYaml
+	err = yaml.Unmarshal(b, &y)
 	if err != nil {
 		return err
 	}
-	request, err := http.NewRequest("PUT", url, bytes.NewReader(b))
+	v := url.Values{}
+	v.Set("id", y.Id)
+	v.Set("password", y.Password)
+	v.Set("username", y.Username)
+	v.Set("team", y.Team)
+	v.Set("endpoint", y.Endpoint["production"])
+	u, err := cmd.GetURL(fmt.Sprintf("/services/%s", y.Id))
 	if err != nil {
 		return err
 	}
+	request, err := http.NewRequest("PUT", u, strings.NewReader(v.Encode()))
+	if err != nil {
+		return err
+	}
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := client.Do(request)
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode == http.StatusNoContent {
+	if resp.StatusCode == http.StatusOK {
 		fmt.Fprintln(ctx.Stdout, "Service successfully updated.")
 	}
 	return nil

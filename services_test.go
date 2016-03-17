@@ -169,11 +169,16 @@ func (s *S) TestServiceUpdate(c *check.C) {
 	trans := cmdtest.ConditionalTransport{
 		Transport: cmdtest.Transport{
 			Message: "",
-			Status:  http.StatusNoContent,
+			Status:  http.StatusOK,
 		},
 		CondFunc: func(req *http.Request) bool {
 			called = true
-			return req.Method == "PUT" && strings.HasSuffix(req.URL.Path, "/services")
+			method := req.Method == "PUT"
+			url := strings.HasSuffix(req.URL.Path, "/services/mysqlapi")
+			id := req.FormValue("id") == "mysqlapi"
+			endpoint := req.FormValue("endpoint") == "mysqlapi.com"
+			contentType := req.Header.Get("Content-Type") == "application/x-www-form-urlencoded"
+			return method && url && id && endpoint && contentType
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
