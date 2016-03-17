@@ -1,4 +1,4 @@
-// Copyright 2014 crane authors. All rights reserved.
+// Copyright 2016 crane authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -12,9 +12,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
+	"strings"
 
 	"github.com/tsuru/tsuru/cmd"
+	"gopkg.in/yaml.v1"
 )
 
 type ServiceCreate struct{}
@@ -29,9 +32,17 @@ func (c *ServiceCreate) Info() *cmd.Info {
 	}
 }
 
+type serviceYaml struct {
+	Id       string
+	Username string
+	Password string
+	Endpoint map[string]string
+	Team     string
+}
+
 func (c *ServiceCreate) Run(context *cmd.Context, client *cmd.Client) error {
 	manifest := context.Args[0]
-	url, err := cmd.GetURL("/services")
+	u, err := cmd.GetURL("/services")
 	if err != nil {
 		return err
 	}
@@ -44,10 +55,22 @@ func (c *ServiceCreate) Run(context *cmd.Context, client *cmd.Client) error {
 	if err != nil {
 		return err
 	}
-	request, err := http.NewRequest("POST", url, bytes.NewReader(data))
+	var y serviceYaml
+	err = yaml.Unmarshal(data, &y)
 	if err != nil {
 		return err
 	}
+	v := url.Values{}
+	v.Set("id", y.Id)
+	v.Set("password", y.Password)
+	v.Set("username", y.Username)
+	v.Set("team", y.Team)
+	v.Set("endpoint", y.Endpoint["production"])
+	request, err := http.NewRequest("POST", u, strings.NewReader(v.Encode()))
+	if err != nil {
+		return err
+	}
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	_, err = client.Do(request)
 	if err != nil {
 		return err

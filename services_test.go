@@ -1,4 +1,4 @@
-// Copyright 2015 crane authors. All rights reserved.
+// Copyright 2016 crane authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -34,7 +34,20 @@ func (s *S) TestServiceCreateRun(c *check.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	trans := cmdtest.Transport{Message: "success", Status: http.StatusOK}
+	trans := cmdtest.ConditionalTransport{
+		Transport: cmdtest.Transport{
+			Message: "success",
+			Status:  http.StatusCreated,
+		},
+		CondFunc: func(req *http.Request) bool {
+			method := req.Method == "POST"
+			url := strings.HasSuffix(req.URL.Path, "/services")
+			id := req.FormValue("id") == "mysqlapi"
+			endpoint := req.FormValue("endpoint") == "mysqlapi.com"
+			contentType := req.Header.Get("Content-Type") == "application/x-www-form-urlencoded"
+			return method && url && id && endpoint && contentType
+		},
+	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
 	err := (&ServiceCreate{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
