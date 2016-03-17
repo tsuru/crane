@@ -73,8 +73,8 @@
 		},
 		{
 			"path": "github.com/tsuru/tsuru/cmd",
-			"revision": "0918383c03987c16af0d37b92569929fd39ad4e0",
-			"revisionTime": "2016-02-22T17:33:35-03:00"
+			"revision": "2e9cde52e0be5d117f8af7f55c49b2a1b9503395",
+			"revisionTime": "2016-03-17T16:07:45-03:00"
 		},
 		{
 			"path": "github.com/tsuru/tsuru/cmd/cmdtest",
