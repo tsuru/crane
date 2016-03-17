@@ -18,7 +18,7 @@ import (
 
 func (s *S) TestServiceCreateInfo(c *check.C) {
 	desc := "Creates a service based on a passed manifest. The manifest format should be a yaml and follow the standard described in the documentation (should link to it here)"
-	cmd := ServiceCreate{}
+	cmd := serviceCreate{}
 	i := cmd.Info()
 	c.Assert(i.Name, check.Equals, "create")
 	c.Assert(i.Usage, check.Equals, "create path/to/manifest [- for stdin]")
@@ -49,7 +49,7 @@ func (s *S) TestServiceCreateRun(c *check.C) {
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
-	err := (&ServiceCreate{}).Run(&context, client)
+	err := (&serviceCreate{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
 	c.Assert(stdout.String(), check.Equals, "Service successfully created\n")
 }
@@ -77,7 +77,7 @@ func (s *S) TestServiceRemoveRun(c *check.C) {
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
-	err := (&ServiceRemove{}).Run(&context, client)
+	err := (&serviceRemove{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
 	c.Assert(called, check.Equals, true)
 	expected := `Are you sure you want to remove the service "my-service"? (y/n) Service successfully removed.`
@@ -97,13 +97,13 @@ func (s *S) TestServiceRemoveRunWithRequestFailure(c *check.C) {
 		Status:  http.StatusForbidden,
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
-	err := (&ServiceRemove{}).Run(&context, client)
+	err := (&serviceRemove{}).Run(&context, client)
 	c.Assert(err, check.NotNil)
 	c.Assert(err.Error(), check.Equals, trans.Message)
 }
 
 func (s *S) TestServiceRemoveIsACommand(c *check.C) {
-	var _ cmd.Command = &ServiceRemove{}
+	var _ cmd.Command = &serviceRemove{}
 }
 
 func (s *S) TestServiceRemoveInfo(c *check.C) {
@@ -113,11 +113,11 @@ func (s *S) TestServiceRemoveInfo(c *check.C) {
 		Desc:    "removes a service from catalog",
 		MinArgs: 1,
 	}
-	c.Assert((&ServiceRemove{}).Info(), check.DeepEquals, expected)
+	c.Assert((&serviceRemove{}).Info(), check.DeepEquals, expected)
 }
 
 func (s *S) TestServiceListInfo(c *check.C) {
-	cmd := ServiceList{}
+	cmd := serviceList{}
 	i := cmd.Info()
 	c.Assert(i.Name, check.Equals, "list")
 	c.Assert(i.Usage, check.Equals, "list")
@@ -140,7 +140,7 @@ func (s *S) TestServiceListRun(c *check.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	err := (&ServiceList{}).Run(&context, client)
+	err := (&serviceList{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
 	c.Assert(stdout.String(), check.Equals, expected)
 }
@@ -156,7 +156,7 @@ func (s *S) TestServiceListRunWithNoServicesReturned(c *check.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	err := (&ServiceList{}).Run(&context, client)
+	err := (&serviceList{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
 	c.Assert(stdout.String(), check.Equals, expected)
 }
@@ -182,14 +182,14 @@ func (s *S) TestServiceUpdate(c *check.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	err := (&ServiceUpdate{}).Run(&context, client)
+	err := (&serviceUpdate{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
 	c.Assert(called, check.Equals, true)
 	c.Assert(stdout.String(), check.Equals, "Service successfully updated.\n")
 }
 
 func (s *S) TestServiceUpdateIsACommand(c *check.C) {
-	var _ cmd.Command = &ServiceUpdate{}
+	var _ cmd.Command = &serviceUpdate{}
 }
 
 func (s *S) TestServiceUpdateInfo(c *check.C) {
@@ -199,7 +199,7 @@ func (s *S) TestServiceUpdateInfo(c *check.C) {
 		Desc:    "Update service data, extracting it from the given manifest file.",
 		MinArgs: 1,
 	}
-	c.Assert((&ServiceUpdate{}).Info(), check.DeepEquals, expected)
+	c.Assert((&serviceUpdate{}).Info(), check.DeepEquals, expected)
 }
 
 func (s *S) TestServiceDocAdd(c *check.C) {
@@ -220,7 +220,7 @@ func (s *S) TestServiceDocAdd(c *check.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	err := (&ServiceDocAdd{}).Run(&context, client)
+	err := (&serviceDocAdd{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
 	c.Assert(called, check.Equals, true)
 	c.Assert(stdout.String(), check.Equals, "Documentation for 'serv' successfully updated.\n")
@@ -233,7 +233,7 @@ func (s *S) TestServiceDocAddInfo(c *check.C) {
 		Desc:    "Update service documentation, extracting it from the given file.",
 		MinArgs: 2,
 	}
-	c.Assert((&ServiceDocAdd{}).Info(), check.DeepEquals, expected)
+	c.Assert((&serviceDocAdd{}).Info(), check.DeepEquals, expected)
 }
 
 func (s *S) TestServiceDocGet(c *check.C) {
@@ -254,7 +254,7 @@ func (s *S) TestServiceDocGet(c *check.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	err := (&ServiceDocGet{}).Run(&context, client)
+	err := (&serviceDocGet{}).Run(&context, client)
 	c.Assert(err, check.IsNil)
 	c.Assert(called, check.Equals, true)
 	c.Assert(context.Stdout.(*bytes.Buffer).String(), check.Equals, "some doc")
@@ -267,11 +267,11 @@ func (s *S) TestServiceDocGetInfo(c *check.C) {
 		Desc:    "Shows service documentation.",
 		MinArgs: 1,
 	}
-	c.Assert((&ServiceDocGet{}).Info(), check.DeepEquals, expected)
+	c.Assert((&serviceDocGet{}).Info(), check.DeepEquals, expected)
 }
 
 func (s *S) TestServiceTemplateInfo(c *check.C) {
-	got := (&ServiceTemplate{}).Info()
+	got := (&serviceTemplate{}).Info()
 	usg := `template
 e.g.: $ crane template`
 	expected := &cmd.Info{
@@ -291,7 +291,7 @@ func (s *S) TestServiceTemplateRun(c *check.C) {
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
-	err := (&ServiceTemplate{}).Run(&ctx, client)
+	err := (&serviceTemplate{}).Run(&ctx, client)
 	defer os.Remove("./manifest.yaml")
 	c.Assert(err, check.IsNil)
 	expected := "Generated file \"manifest.yaml\" in current directory\n"

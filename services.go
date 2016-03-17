@@ -20,9 +20,9 @@ import (
 	"gopkg.in/yaml.v1"
 )
 
-type ServiceCreate struct{}
+type serviceCreate struct{}
 
-func (c *ServiceCreate) Info() *cmd.Info {
+func (c *serviceCreate) Info() *cmd.Info {
 	desc := "Creates a service based on a passed manifest. The manifest format should be a yaml and follow the standard described in the documentation (should link to it here)"
 	return &cmd.Info{
 		Name:    "create",
@@ -40,7 +40,7 @@ type serviceYaml struct {
 	Team     string
 }
 
-func (c *ServiceCreate) Run(context *cmd.Context, client *cmd.Client) error {
+func (c *serviceCreate) Run(context *cmd.Context, client *cmd.Client) error {
 	manifest := context.Args[0]
 	u, err := cmd.GetURL("/services")
 	if err != nil {
@@ -79,11 +79,11 @@ func (c *ServiceCreate) Run(context *cmd.Context, client *cmd.Client) error {
 	return nil
 }
 
-type ServiceRemove struct {
+type serviceRemove struct {
 	cmd.ConfirmationCommand
 }
 
-func (c *ServiceRemove) Run(context *cmd.Context, client *cmd.Client) error {
+func (c *serviceRemove) Run(context *cmd.Context, client *cmd.Client) error {
 	serviceName := context.Args[0]
 	question := fmt.Sprintf("Are you sure you want to remove the service %q?", serviceName)
 	if !c.Confirm(context, question) {
@@ -105,7 +105,7 @@ func (c *ServiceRemove) Run(context *cmd.Context, client *cmd.Client) error {
 	return nil
 }
 
-func (c *ServiceRemove) Info() *cmd.Info {
+func (c *serviceRemove) Info() *cmd.Info {
 	return &cmd.Info{
 		Name:    "remove",
 		Usage:   "remove <servicename>",
@@ -114,9 +114,9 @@ func (c *ServiceRemove) Info() *cmd.Info {
 	}
 }
 
-type ServiceList struct{}
+type serviceList struct{}
 
-func (c *ServiceList) Info() *cmd.Info {
+func (c *serviceList) Info() *cmd.Info {
 	return &cmd.Info{
 		Name:  "list",
 		Usage: "list",
@@ -124,7 +124,7 @@ func (c *ServiceList) Info() *cmd.Info {
 	}
 }
 
-func (c *ServiceList) Run(ctx *cmd.Context, client *cmd.Client) error {
+func (c *serviceList) Run(ctx *cmd.Context, client *cmd.Client) error {
 	url, err := cmd.GetURL("/services")
 	if err != nil {
 		return err
@@ -150,9 +150,9 @@ func (c *ServiceList) Run(ctx *cmd.Context, client *cmd.Client) error {
 	return nil
 }
 
-type ServiceUpdate struct{}
+type serviceUpdate struct{}
 
-func (c *ServiceUpdate) Info() *cmd.Info {
+func (c *serviceUpdate) Info() *cmd.Info {
 	return &cmd.Info{
 		Name:    "update",
 		Usage:   "update <path/to/manifest>",
@@ -161,7 +161,7 @@ func (c *ServiceUpdate) Info() *cmd.Info {
 	}
 }
 
-func (c *ServiceUpdate) Run(ctx *cmd.Context, client *cmd.Client) error {
+func (c *serviceUpdate) Run(ctx *cmd.Context, client *cmd.Client) error {
 	manifest := ctx.Args[0]
 	b, err := ioutil.ReadFile(manifest)
 	if err != nil {
@@ -185,9 +185,9 @@ func (c *ServiceUpdate) Run(ctx *cmd.Context, client *cmd.Client) error {
 	return nil
 }
 
-type ServiceDocAdd struct{}
+type serviceDocAdd struct{}
 
-func (c *ServiceDocAdd) Info() *cmd.Info {
+func (c *serviceDocAdd) Info() *cmd.Info {
 	return &cmd.Info{
 		Name:    "doc-add",
 		Usage:   "service doc-add <service> <path/to/docfile>",
@@ -196,7 +196,7 @@ func (c *ServiceDocAdd) Info() *cmd.Info {
 	}
 }
 
-func (c *ServiceDocAdd) Run(ctx *cmd.Context, client *cmd.Client) error {
+func (c *serviceDocAdd) Run(ctx *cmd.Context, client *cmd.Client) error {
 	serviceName := ctx.Args[0]
 	url, err := cmd.GetURL("/services/" + serviceName + "/doc")
 	if err != nil {
@@ -216,9 +216,9 @@ func (c *ServiceDocAdd) Run(ctx *cmd.Context, client *cmd.Client) error {
 	return nil
 }
 
-type ServiceDocGet struct{}
+type serviceDocGet struct{}
 
-func (c *ServiceDocGet) Run(ctx *cmd.Context, client *cmd.Client) error {
+func (c *serviceDocGet) Run(ctx *cmd.Context, client *cmd.Client) error {
 	serviceName := ctx.Args[0]
 	url, err := cmd.GetURL("/services/" + serviceName + "/doc")
 	if err != nil {
@@ -242,7 +242,7 @@ func (c *ServiceDocGet) Run(ctx *cmd.Context, client *cmd.Client) error {
 	return nil
 }
 
-func (c *ServiceDocGet) Info() *cmd.Info {
+func (c *serviceDocGet) Info() *cmd.Info {
 	return &cmd.Info{
 		Name:    "doc-get",
 		Usage:   "service doc-get <service>",
@@ -251,9 +251,9 @@ func (c *ServiceDocGet) Info() *cmd.Info {
 	}
 }
 
-type ServiceTemplate struct{}
+type serviceTemplate struct{}
 
-func (c *ServiceTemplate) Info() *cmd.Info {
+func (c *serviceTemplate) Info() *cmd.Info {
 	usg := `template
 e.g.: $ crane template`
 	return &cmd.Info{
@@ -274,7 +274,7 @@ func generatePassword() (string, error) {
 	return base64.StdEncoding.EncodeToString(b), nil
 }
 
-func (c *ServiceTemplate) Run(ctx *cmd.Context, client *cmd.Client) error {
+func (c *serviceTemplate) Run(ctx *cmd.Context, client *cmd.Client) error {
 	pass, err := generatePassword()
 	if err != nil {
 		return err

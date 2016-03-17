@@ -17,13 +17,13 @@ const (
 
 func buildManager(name string) *cmd.Manager {
 	m := cmd.BuildBaseManager(name, version, header, nil)
-	m.Register(&ServiceCreate{})
-	m.Register(&ServiceRemove{})
-	m.Register(&ServiceList{})
-	m.Register(&ServiceUpdate{})
-	m.Register(&ServiceDocGet{})
-	m.Register(&ServiceDocAdd{})
-	m.Register(&ServiceTemplate{})
+	m.Register(&serviceCreate{})
+	m.Register(&serviceRemove{})
+	m.Register(&serviceList{})
+	m.Register(&serviceUpdate{})
+	m.Register(&serviceDocGet{})
+	m.Register(&serviceDocAdd{})
+	m.Register(&serviceTemplate{})
 	return m
 }
 
