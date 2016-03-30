@@ -216,7 +216,10 @@ func (s *S) TestServiceDocAdd(c *check.C) {
 		Transport: cmdtest.Transport{Message: "", Status: http.StatusNoContent},
 		CondFunc: func(req *http.Request) bool {
 			called = true
-			return req.Method == "PUT" && strings.HasSuffix(req.URL.Path, "/services/serv/doc")
+			method := req.Method == "PUT"
+			path := strings.HasSuffix(req.URL.Path, "/services/serv/doc")
+			contentType := req.Header.Get("Content-Type") == "application/x-www-form-urlencoded"
+			return method && path && contentType
 		},
 	}
 	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)

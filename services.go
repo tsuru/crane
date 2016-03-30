@@ -5,7 +5,6 @@
 package main
 
 import (
-	"bytes"
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
@@ -210,16 +209,19 @@ func (c *serviceDocAdd) Info() *cmd.Info {
 
 func (c *serviceDocAdd) Run(ctx *cmd.Context, client *cmd.Client) error {
 	serviceName := ctx.Args[0]
-	url, err := cmd.GetURL("/services/" + serviceName + "/doc")
+	u, err := cmd.GetURL("/services/" + serviceName + "/doc")
 	if err != nil {
 		return err
 	}
 	docPath := ctx.Args[1]
 	b, err := ioutil.ReadFile(docPath)
-	request, err := http.NewRequest("PUT", url, bytes.NewReader(b))
+	v := url.Values{}
+	v.Set("doc", string(b))
+	request, err := http.NewRequest("PUT", u, strings.NewReader(v.Encode()))
 	if err != nil {
 		return err
 	}
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	_, err = client.Do(request)
 	if err != nil {
 		return err
