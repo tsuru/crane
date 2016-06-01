@@ -108,7 +108,8 @@ func GetUserByEmail(email string) (*User, error) {
 func (u *User) Create() error {
 	conn, err := db.Conn()
 	if err != nil {
-		return err
+		addr, _ := db.DbConfig("")
+		return stderrors.New(fmt.Sprintf("Failed to connect to MongoDB %q - %s.", addr, err.Error()))
 	}
 	defer conn.Close()
 	if u.Quota.Limit == 0 {
@@ -225,7 +226,7 @@ func (u *User) RegenerateAPIKey() (string, error) {
 	return u.APIKey, u.Update()
 }
 
-func (u *User) reload() error {
+func (u *User) Reload() error {
 	conn, err := db.Conn()
 	if err != nil {
 		return err
@@ -275,7 +276,7 @@ func (u *User) AddRole(roleName string, contextValue string) error {
 	if err != nil {
 		return err
 	}
-	return u.reload()
+	return u.Reload()
 }
 
 func RemoveRoleFromAllUsers(roleName string) error {
@@ -309,7 +310,7 @@ func (u *User) RemoveRole(roleName string, contextValue string) error {
 	if err != nil {
 		return err
 	}
-	return u.reload()
+	return u.Reload()
 }
 
 func (u *User) AddRolesForEvent(roleEvent *permission.RoleEvent, contextValue string) error {

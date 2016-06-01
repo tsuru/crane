@@ -46,7 +46,7 @@ func healthCheck() error {
 	return conn.Apps().Database.Session.Ping()
 }
 
-func dbConfig(prefix string) (string, string) {
+func DbConfig(prefix string) (string, string) {
 	url, _ := config.GetString(fmt.Sprintf("database:%surl", prefix))
 	if url == "" {
 		url, _ = config.GetString("database:url")
@@ -73,7 +73,7 @@ func Conn() (*Storage, error) {
 		strg Storage
 		err  error
 	)
-	url, dbname := dbConfig("")
+	url, dbname := DbConfig("")
 	strg.Storage, err = storage.Open(url, dbname)
 	return &strg, err
 }
@@ -83,7 +83,7 @@ func LogConn() (*LogStorage, error) {
 		strg LogStorage
 		err  error
 	)
-	url, dbname := dbConfig("logdb-")
+	url, dbname := DbConfig("logdb-")
 	strg.Storage, err = storage.Open(url, dbname)
 	return &strg, err
 }
@@ -97,9 +97,9 @@ func (s *Storage) Apps() *storage.Collection {
 }
 
 func (s *Storage) Deploys() *storage.Collection {
-	timestampIndex := mgo.Index{Key: []string{"-timestamp"}}
+	deployIndex := mgo.Index{Key: []string{"app", "-timestamp"}}
 	c := s.Collection("deploys")
-	c.EnsureIndex(timestampIndex)
+	c.EnsureIndex(deployIndex)
 	return c
 }
 
@@ -121,6 +121,11 @@ func (s *Storage) ServiceInstances() *storage.Collection {
 // Plans returns the plans collection.
 func (s *Storage) Plans() *storage.Collection {
 	return s.Collection("plans")
+}
+
+// Pools returns the pool collection.
+func (s *Storage) Pools() *storage.Collection {
+	return s.Collection("pool")
 }
 
 // Users returns the users collection from MongoDB.
@@ -208,10 +213,6 @@ func (s *Storage) Roles() *storage.Collection {
 	return s.Collection("roles")
 }
 
-func (s *Storage) ScopedConfig() *storage.Collection {
-	// This collection has this name for historical reasons. At first it was
-	// used exclusively by the bs component, later it became a generic
-	// configuration collection. Preserving the old name allow updating tsuru
-	// without the need for data migrations.
-	return s.Collection("bsconfig")
+func (s *Storage) Limiter() *storage.Collection {
+	return s.Collection("limiter")
 }
