@@ -145,6 +145,20 @@ func (s *S) TestServiceListRun(c *check.C) {
 	c.Assert(stdout.String(), check.Equals, expected)
 }
 
+func (s *S) TestServiceListNoContent(c *check.C) {
+	var stdout, stderr bytes.Buffer
+	trans := cmdtest.Transport{Status: http.StatusNoContent}
+	client := cmd.NewClient(&http.Client{Transport: &trans}, nil, manager)
+	context := cmd.Context{
+		Args:   []string{},
+		Stdout: &stdout,
+		Stderr: &stderr,
+	}
+	err := (&serviceList{}).Run(&context, client)
+	c.Assert(err, check.IsNil)
+	c.Assert(stdout.String(), check.Equals, "")
+}
+
 func (s *S) TestServiceListRunWithNoServicesReturned(c *check.C) {
 	var stdout, stderr bytes.Buffer
 	response := `[]`

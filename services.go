@@ -136,6 +136,9 @@ func (c *serviceList) Run(ctx *cmd.Context, client *cmd.Client) error {
 	if err != nil {
 		return err
 	}
+	if resp.StatusCode == http.StatusNoContent {
+		return nil
+	}
 	b, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
