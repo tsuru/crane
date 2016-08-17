@@ -9,8 +9,6 @@ go:
   - 1.7
   - tip
 env:
-  global:
-    - GO15VENDOREXPERIMENT=1
   matrix:
     - GOARCH=amd64
     - GOARCH=386
