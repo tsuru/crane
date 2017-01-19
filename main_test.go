@@ -23,47 +23,47 @@ func (s *S) TestCreateIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	target, ok := manager.Commands["create"]
 	c.Assert(ok, check.Equals, true)
-	c.Assert(target, check.FitsTypeOf, &serviceCreate{})
+	c.Assert(target, check.FitsTypeOf, &cmd.RemovedCommand{})
 }
 
 func (s *S) TestRemoveIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	remove, ok := manager.Commands["remove"]
 	c.Assert(ok, check.Equals, true)
-	c.Assert(remove, check.FitsTypeOf, &serviceRemove{})
+	c.Assert(remove, check.FitsTypeOf, &cmd.RemovedCommand{})
 }
 
 func (s *S) TestListIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	remove, ok := manager.Commands["list"]
 	c.Assert(ok, check.Equals, true)
-	c.Assert(remove, check.FitsTypeOf, &serviceList{})
+	c.Assert(remove, check.FitsTypeOf, &cmd.RemovedCommand{})
 }
 
 func (s *S) TestUpdateIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["update"]
 	c.Assert(ok, check.Equals, true)
-	c.Assert(update, check.FitsTypeOf, &serviceUpdate{})
+	c.Assert(update, check.FitsTypeOf, &cmd.RemovedCommand{})
 }
 
 func (s *S) TestDocGetIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["doc-get"]
 	c.Assert(ok, check.Equals, true)
-	c.Assert(update, check.FitsTypeOf, &serviceDocGet{})
+	c.Assert(update, check.FitsTypeOf, &cmd.RemovedCommand{})
 }
 
 func (s *S) TestDocAddIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["doc-add"]
 	c.Assert(ok, check.Equals, true)
-	c.Assert(update, check.FitsTypeOf, &serviceDocAdd{})
+	c.Assert(update, check.FitsTypeOf, &cmd.RemovedCommand{})
 }
 
 func (s *S) TestTemplateIsRegistered(c *check.C) {
 	manager := buildManager("tsuru")
 	update, ok := manager.Commands["template"]
 	c.Assert(ok, check.Equals, true)
-	c.Assert(update, check.FitsTypeOf, &serviceTemplate{})
+	c.Assert(update, check.FitsTypeOf, &cmd.RemovedCommand{})
 }

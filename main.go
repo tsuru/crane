@@ -17,13 +17,13 @@ const (
 
 func buildManager(name string) *cmd.Manager {
 	m := cmd.BuildBaseManager(name, version, header, nil)
-	m.Register(&serviceCreate{})
-	m.Register(&serviceRemove{})
-	m.Register(&serviceList{})
-	m.Register(&serviceUpdate{})
-	m.Register(&serviceDocGet{})
-	m.Register(&serviceDocAdd{})
-	m.Register(&serviceTemplate{})
+	m.RegisterRemoved("create", "You should use `tsuru service-create` instead.")
+	m.RegisterRemoved("remove", "You should use `tsuru service-destroy` instead.")
+	m.RegisterRemoved("list", "You should use `tsuru service-list` instead.")
+	m.RegisterRemoved("update", "You should use `tsuru service-update` instead.")
+	m.RegisterRemoved("doc-get", "You should use `tsuru service-doc-get` instead.")
+	m.RegisterRemoved("doc-add", "You should use `tsuru service-doc-add` instead.")
+	m.RegisterRemoved("template", "You should use `tsuru service-template` instead.")
 	return m
 }
 
